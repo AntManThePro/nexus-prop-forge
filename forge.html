@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#0a0a0f"/>
+<title>Warehouse Scan · For Paulie @ Twisted Genius</title>
+<style>
+html,body{margin:0;background:#0a0a0f;color:#e8fff4;font-family:ui-monospace,Menlo,Consolas,monospace;height:100%}
+canvas{display:block;width:100%;height:calc(100vh - 88px)}
+nav a{color:#60efff;text-decoration:none;font-size:11px;letter-spacing:.14em;text-transform:uppercase;border:1px solid #60efff33;padding:6px 10px;border-radius:6px;margin-right:6px}
+nav a.on{color:#00ff87;border-color:#00ff87}
+</style></head>
+<body>
+<header style="padding:8px 16px;border-bottom:1px solid #00ff8733">
+<div style="color:#ffcc00;font-size:10px">FOR PAULIE · TWISTED GENIUS · DoubleA</div>
+<div style="color:#00ff87;letter-spacing:.28em;font-size:20px">NEXUS SCAN</div>
+</header>
+<nav style="padding:8px 16px">
+<a href="index.html">Gate</a>
+<a class="on" href="forge.html">Warehouse Scan</a>
+<a href="houses.html">Buyer Map</a>
+<a href="lookbook.html">Lookbook</a>
+</nav>
+<canvas id="c"></canvas>
+<script>
+const c=document.getElementById('c'),x=c.getContext('2d');
+let W,H,t=0,yaw=0.4;
+function rs(){W=c.width=innerWidth*(devicePixelRatio||1);H=c.height=(innerHeight-88)*(devicePixelRatio||1);c.style.width=innerWidth+'px';c.style.height=(innerHeight-88)+'px'}
+addEventListener('resize',rs);rs();
+function pr(X,Y,Z){const cs=Math.cos(yaw),sn=Math.sin(yaw);const xr=X*cs-Z*sn,zr=X*sn+Z*cs,s=220/(320+zr);return{x:W*0.52+xr*s,y:H*0.42+Y*s,s}}
+function loop(){
+ t++;yaw=Math.sin(t*0.008)*0.8;
+ x.fillStyle='#0a0a0f';x.fillRect(0,0,W,H);
+ x.strokeStyle='#00ff8718';
+ for(let i=-6;i<=6;i++){const a=pr(i*40,120,-80),b=pr(i*40,120,80);x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke()}
+ [[-150,8,-28,-158,118,-30],[40,8,-28,40,118,-28],[155,8,28,162,118,32]].forEach(L=>{const a=pr(L[0],L[1],L[2]),b=pr(L[3],L[4],L[5]);x.strokeStyle='#cfe8ff';x.lineWidth=6*a.s;x.beginPath();x.moveTo(a.x,a.y);x.bezierCurveTo(a.x+20,a.y+30,b.x-10,b.y-40,b.x,b.y);x.stroke()});
+ const fl=[pr(-170,8,-36),pr(170,8,-36),pr(170,8,36),pr(-170,8,36)];
+ x.beginPath();x.moveTo(fl[0].x,fl[0].y);fl.slice(1).forEach(p=>x.lineTo(p.x,p.y));x.closePath();x.fillStyle='#dce4ea';x.fill();
+ const cu=[pr(-160,-28,-30),pr(160,-28,-30),pr(160,-22,32),pr(-160,-22,32)];
+ x.beginPath();x.moveTo(cu[0].x,cu[0].y);cu.slice(1).forEach(p=>x.lineTo(p.x,p.y));x.closePath();x.fillStyle='#1a1520';x.fill();
+ for(let i=0;i<140;i++){const u=Math.random(),v=Math.random();const q=pr(-150+u*300,-30+Math.sin(u*8)*4,-26+v*52);x.fillStyle='hsl('+(200+u*80)+',90%,70%)';x.globalAlpha=.55;x.beginPath();x.arc(q.x,q.y,1.4,0,6.28);x.fill()}
+ x.globalAlpha=1;x.fillStyle='#00ff87';x.font='14px monospace';x.fillText('HB-01 GLITTER HERO BENCH · PAULIE DROP',16,28);
+ requestAnimationFrame(loop)
+}
+loop();
+</script>
+</body></html>
